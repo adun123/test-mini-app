@@ -27,6 +27,16 @@ class AuthController extends Controller
             return back()->withErrors(['email' => 'Email atau password salah.'])->onlyInput('email');
         }
 
+        if (! in_array($request->user()->role, ['admin', 'employee'], true)) {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return redirect()->route('login')
+                ->withErrors(['email' => 'Role akun tidak valid. Silakan hubungi admin.'])
+                ->onlyInput('email');
+        }
+
         $request->session()->regenerate();
 
         return redirect()->intended(route('dashboard'));

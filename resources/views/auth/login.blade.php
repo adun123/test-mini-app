@@ -7,6 +7,12 @@
         <p class="muted">Mini Attendance App</p>
     </div>
 
+    @if($errors->any())
+        <div class="message danger">
+            {{ $errors->first() }}
+        </div>
+    @endif
+
     <form method="POST" action="{{ route('login.store') }}">
         @csrf
         <div class="field">
